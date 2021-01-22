@@ -1,0 +1,57 @@
+/* ===================== */
+/* Important styles
+/* ===================== */
+
+video {
+	height: auto;
+	width: 100%;
+	display: block;
+}
+
+@media (max-width: 649px) {
+	.hide-mobile {
+		display: none;
+	}
+}
+
+@media (min-width: 650px) {
+	.hide-desktop {
+		display: none;
+	}
+}
+
+/* ===================== */
+/* Cosmetic-only styles
+/* ===================== */
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: hsl(0, 0%, 94%);
+	margin: 0px;
+	font-family: monospace;
+}
+
+main {
+	width: 100%;
+	max-width: 600px;
+	margin: 1rem;
+	background: white;
+	border-radius: 2ch;
+	padding: 2rem;
+	box-shadow: 4px 4px 8px hsla(0, 0%, 10%, 8%);
+}
+
+h2:first-of-type {
+	margin-top: 0px;
+}
+
+video {
+	border-radius: 2ch;
+}
+
+.credit {
+	text-align: center;
+	margin-bottom: 0;
+}

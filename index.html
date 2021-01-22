@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lazyvids.js</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.mjs"></script>
+  <script>
+    // window.lazyvidsConfig = {
+    //   reduceData: false, // boolean
+    //   minBandwidth: 2.0, // number: mbps
+    //   logLevel: 'all', // string: all, warn, silent
+    // };
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let html = `
+        <video class="" data-lazyvids="test" muted loop disablePictureInPicture disableRemotePlayback x-webkit-airplay="deny"
+          data-src="https://res.cloudinary.com/milkshake/video/upload/v1607414866/flying.mp4"
+          poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
+          title="Flight over mountainous terrain">
+        </video>
+        <video class="" data-lazyvids muted loop disablePictureInPicture disableRemotePlayback x-webkit-airplay="deny"
+          src="https://res.cloudinary.com/milkshake/video/upload/v1607414866/flying.mp4"
+          poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
+          title="Flight over mountainous terrain">
+        </video>
+      `
+      const addVideos = () => {
+        const lastVideo = document.querySelector('video:last-of-type');
+        lastVideo.insertAdjacentHTML('afterend', html);
+      }
+      const button = document.querySelector('button');
+      button.addEventListener('click', addVideos);
+    });
+  </script>
+</head>
+
+<body>
+  <main>
+    <h2>lazyvids.js</h2>
+    <p>Used to lazy-load autoplay HTML5 videos.</p>
+    <button>Add videos</button>
+    <video class="hide-desktop" data-lazyvids muted loop disablePictureInPicture disableRemotePlayback
+      x-webkit-airplay="deny" data-src="https://res.cloudinary.com/milkshake/video/upload/v1607420326/clouds.mp4"
+      poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/clouds_poster.jpg" width="1440" height="1918"
+      title="Timelapse of clouds over a building">
+    </video>
+    <video class="hide-mobile" data-lazyvids muted loop disablePictureInPicture disableRemotePlayback
+      x-webkit-airplay="deny" data-src="https://res.cloudinary.com/milkshake/video/upload/v1607414866/flying.mp4"
+      poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
+      title="Flight over mountainous terrain">
+    </video>
+    <video class="" data-lazyvids muted loop disablePictureInPicture disableRemotePlayback x-webkit-airplay="deny"
+      poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
+      title="Flight over mountainous terrain">
+      <source data-src="https://res.cloudinary.com/milkshake/video/upload/v1607414866/flying.mp4">
+    </video>
+    <video class="" data-lazyvids muted loop disablePictureInPicture disableRemotePlayback x-webkit-airplay="deny"
+      data-src="https://res.cloudinary.com/milkshake/video/upload/v1607414866/flying.mp4"
+      poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
+      title="Flight over mountainous terrain">
+    </video>
+    <p class="credit">Videos from Pexels</p>
+  </main>
+</body>
+
+</html>
