@@ -46,10 +46,30 @@ const lazyvids = (() => {
 		}
 
 		/*
-		 * triggerAutplay() is the last step, and main functionality.
+		 * triggerAutoplay() is the last step, and main functionality.
+		 * If present, <source> nodes are replaced with new <source> nodes
+		 * including a [src] attribute — autoplay is not triggered by updating
+		 * [src] attribute of the original <source> nodes.
+		 *
+		 * If <source> nodes are not used, <video> element [src] attribute is updated.
+		 *
+		 * [autoplay] attribute is set, and [data-lazyvids] updated to 'loaded'.
 		 */
 		const triggerAutoplay = video => {
-			video.setAttribute('src', video.dataset.src);
+			const sourceNodes = Array.from(video.querySelectorAll('source'));
+			if (sourceNodes.length > 0) {
+				for (const source of sourceNodes) {
+					const src = source.dataset.src;
+					const type = source.type;
+					const newSource = document.createElement('source');
+					newSource.setAttribute('src', src);
+					if (type !== '') newSource.setAttribute('type', type);
+					source.remove();
+					video.appendChild(newSource);
+				}
+			} else {
+				video.setAttribute('src', video.dataset.src);
+			}
 			video.setAttribute('autoplay', '');
 			video.setAttribute('data-lazyvids', 'loaded');
 		};
@@ -89,8 +109,33 @@ const lazyvids = (() => {
 		 * handling <video> elements discovered in the DOM.
 		 */
 		const process = video => {
-			// lazyvids videos must have a non-empty data-src attribute
-			if (video.dataset.src === undefined || video.dataset.src === '') {
+			/*
+			 * lazyvids videos must have a non-empty data-src attribute on either the
+			 * main <video> element, or all child <source> nodes.
+			 */
+			const sourceNodes = Array.from(video.querySelectorAll('source'));
+			const hasSourceNodes = sourceNodes.length > 0;
+			let hasVideoDataSrc;
+			let hasSourceDataSrc;
+
+			const hasDataSrc = node =>
+				node.dataset.src !== undefined && node.dataset.src !== '';
+
+			hasVideoDataSrc = hasDataSrc(video);
+
+			if (hasSourceNodes) {
+				for (const source of sourceNodes) {
+					if (hasDataSrc(source) === false) {
+						hasSourceDataSrc = false;
+						break;
+					}
+				}
+			}
+
+			if (
+				(hasSourceNodes && hasSourceDataSrc === false) ||
+				(hasSourceNodes === false && hasVideoDataSrc === false)
+			) {
 				warn(
 					`Video missing data-src attribute or data-src is empty. Lazy autoplay skipped for:`,
 					video
@@ -113,7 +158,7 @@ const lazyvids = (() => {
 			}
 
 			// Fully supported
-			video.setAttribute('lazyvids', 'unloaded');
+			video.setAttribute('data-lazyvids', 'unloaded');
 			intersectionObserver.observe(video);
 		};
 
