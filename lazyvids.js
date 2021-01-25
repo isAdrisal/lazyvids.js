@@ -58,6 +58,7 @@ const lazyvids = (() => {
 		const triggerAutoplay = video => {
 			const sourceNodes = Array.from(video.querySelectorAll('source'));
 			if (sourceNodes.length > 0) {
+				const fragment = document.createDocumentFragment();
 				for (const source of sourceNodes) {
 					const src = source.dataset.src;
 					const type = source.type;
@@ -65,13 +66,18 @@ const lazyvids = (() => {
 					newSource.setAttribute('src', src);
 					if (type !== '') newSource.setAttribute('type', type);
 					source.remove();
-					video.appendChild(newSource);
+					fragment.appendChild(newSource);
 				}
+				window.requestAnimationFrame(() => video.appendChild(fragment));
 			} else {
-				video.setAttribute('src', video.dataset.src);
+				window.requestAnimationFrame(() =>
+					video.setAttribute('src', video.dataset.src)
+				);
 			}
-			video.setAttribute('autoplay', '');
-			video.setAttribute('data-lazyvids', 'loaded');
+			window.requestAnimationFrame(() => {
+				video.setAttribute('autoplay', '');
+				video.setAttribute('data-lazyvids', 'loaded');
+			});
 		};
 
 		/*
