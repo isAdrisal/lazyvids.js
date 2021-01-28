@@ -11,11 +11,13 @@
   <link rel="modulepreload" href="lazyvids.js">
   <script type="module" src="main.mjs"></script>
   <script>
-    // window.lazyvidsConfig = {
-    //   reduceData: false, // boolean
-    //   minBandwidth: 2.0, // number: mbps
-    //   logLevel: 'all', // string: all, warn, silent
-    // };
+    window.lazyvidsConfig = {
+      // ignoreHidden: true,
+      // logLevel: 'all', // string: all, warn, silent
+      // minBandwidth: 2.0, // number: mbps
+      // reduceData: false, // boolean
+      // requirePoster: true,
+    };
   </script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -78,6 +80,13 @@
       poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
       title="Flight over mountainous terrain">
     </video>
+    <div class="hidden">
+      <video class="" data-lazyvids muted loop disablePictureInPicture disableRemotePlayback x-webkit-airplay="deny"
+        data-src="https://res.cloudinary.com/milkshake/video/upload/v1607414866/flying.mp4"
+        poster="https://res.cloudinary.com/milkshake/image/upload/f_auto/flying_poster.jpg" width="1920" height="1080"
+        title="Flight over mountainous terrain">
+      </video>
+    </div>
     <p class="credit">Videos from Pexels</p>
   </main>
 </body>
