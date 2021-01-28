@@ -1,21 +1,28 @@
+/**
+ * Lazy-loading videos.
+ */
 const lazyvids = (() => {
 	document.addEventListener('DOMContentLoaded', () => {
-		/*
-		 * Configuration options and initialise variables.
+		/**
+		 * Configuration options.
 		 */
 		const configObj = window.lazyvidsConfig || {};
 		const config = {
-			reduceData:
-				configObj && configObj.reduceData ? configObj.reduceData : false,
+			logLevel: configObj && configObj.logLevel ? configObj.logLevel : 'silent',
+			ignoreHidden:
+				configObj && configObj.ignoreHidden ? configObj.ignoreHidden : false,
 			minBandwidth:
 				configObj && configObj.minBandwidth
 					? Number.parseFloat(configObj.minBandwidth)
 					: 2.0,
-			logLevel: configObj && configObj.logLevel ? configObj.logLevel : 'all',
+			reduceData:
+				configObj && configObj.reduceData ? configObj.reduceData : false,
+			requirePoster:
+				configObj && configObj.requirePoster ? configObj.requirePoster : true,
 		};
 
 		const log = (message, object) => {
-			if (config.logLevel !== 'all') return;
+			if (config.logLevel !== 'verbose') return;
 			object
 				? window.console.log(`lazyvids: ${message}`, object)
 				: window.console.log(`lazyvids: ${message}`);
@@ -45,15 +52,16 @@ const lazyvids = (() => {
 			return;
 		}
 
-		/*
-		 * triggerAutoplay() is the last step, and main functionality.
-		 * If present, <source> nodes are replaced with new <source> nodes
-		 * including a [src] attribute — autoplay is not triggered by updating
-		 * [src] attribute of the original <source> nodes.
+		/**
+		 * `triggerAutoplay()` is the last step, and main functionality.
+		 * If present, `<source>` nodes are replaced with new `<source>` nodes
+		 * including a `src` attribute — rather than by updating the `src`
+		 * attribute of the original `<source>` node. Updating the `src` attribute
+		 * alone does not correctly update the `<video>` element's currentSrc.
 		 *
-		 * If <source> nodes are not used, <video> element [src] attribute is updated.
+		 * If `<source>` nodes are not used, `<video>` element `src` attribute is updated.
 		 *
-		 * [autoplay] attribute is set, and [data-lazyvids] updated to 'loaded'.
+		 * Finally, `autoplay` attribute is set, and `data-lazyvids` value set to `loaded`.
 		 */
 		const triggerAutoplay = video => {
 			const sourceNodes = Array.from(video.querySelectorAll('source'));
@@ -65,7 +73,6 @@ const lazyvids = (() => {
 					const newSource = document.createElement('source');
 					newSource.setAttribute('src', src);
 					if (type !== '') newSource.setAttribute('type', type);
-					source.remove();
 					fragment.appendChild(newSource);
 				}
 				window.requestAnimationFrame(() => video.appendChild(fragment));
@@ -80,44 +87,66 @@ const lazyvids = (() => {
 			});
 		};
 
-		/*
+		/**
+		 * Utility function to check for video element visibility.
+		 */
+		const isVisible = element => {
+			if (
+				element.style &&
+				element.style.display &&
+				element.style.display === 'none'
+			)
+				return false;
+			if (
+				config.ignoreHidden &&
+				element.style &&
+				element.style.visibility &&
+				element.style.visibility === 'hidden'
+			)
+				return false;
+			const styles = getComputedStyle(element);
+			const display = styles.getPropertyValue('display');
+			if (display === 'none') return false;
+			if (config.ignoreHidden) {
+				const visibility = styles.getPropertyValue('visibility');
+				if (visibility === 'hidden') return false;
+			}
+			if (element.parentNode && element.parentNode !== document)
+				return isVisible(element.parentNode);
+			return true;
+		};
+
+		/**
 		 * Set up IntersectionObserver to respond to lazyvids videos entering
-		 * the viewport. requestAnimationFrame() is used to delay processing
-		 * until next layout to allow opportunity for styles to 'settle' before
-		 * calculations are made — particularly related to display === 'none'.
+		 * the viewport.
 		 */
 		const handleIntersection = (entries, intersectionObserver) => {
 			entries.forEach(entry => {
 				window.requestAnimationFrame(() => {
 					const target = entry.target;
-
-					// Skip non-intersecting elements.
 					if (entry.isIntersecting === false) return;
-
-					const styles = getComputedStyle(target);
-					const display = styles.getPropertyValue('display');
-					if (display === 'none') return;
+					if (isVisible(target) === false) return;
 					triggerAutoplay(target);
 					intersectionObserver.unobserve(target);
 				});
 			});
 		};
 
-		/*
+		/**
 		 * Create IntersectionObserver for supported browsers (not IE).
 		 */
 		if (hasIo) {
 			intersectionObserver = new IntersectionObserver(handleIntersection);
 		}
 
-		/*
-		 * process() method does most of the heavy lifting regarding
+		/**
+		 * `process()` method does most of the heavy lifting regarding
 		 * handling <video> elements discovered in the DOM.
 		 */
 		const process = video => {
-			/*
-			 * lazyvids videos must have a non-empty data-src attribute on either the
-			 * main <video> element, or all child <source> nodes.
+			/**
+			 * lazyvids videos must have a non-empty `data-src` attribute on either the
+			 * main `<video>` element, or all child `<source>` nodes.
 			 */
 			const sourceNodes = Array.from(video.querySelectorAll('source'));
 			const hasSourceNodes = sourceNodes.length > 0;
@@ -150,7 +179,10 @@ const lazyvids = (() => {
 			}
 
 			// lazyvids videos must have a poster image
-			if (video.poster === '') {
+			if (
+				config.requirePoster &&
+				(video.poster === undefined || video.poster === '')
+			) {
 				triggerAutoplay(video);
 				warn(`Video missing poster image. Lazy autoplay disabled for:`, video);
 				return;
@@ -168,10 +200,10 @@ const lazyvids = (() => {
 			intersectionObserver.observe(video);
 		};
 
-		/*
+		/**
 		 * Begin processing videos currently in the DOM.
 		 */
-		const selector = 'video[data-lazyvids]';
+		const selector = 'video[data-lazyvids]:not([data-lazyvids=loaded])';
 		const lazyVideos = document.querySelectorAll(selector);
 		log(
 			`Initialised — ${lazyVideos.length} ${
@@ -182,14 +214,18 @@ const lazyvids = (() => {
 			process(video);
 		}
 
-		/*
+		/**
 		 * Set up mutationObserver to watch for new lazyvids videos being
 		 * added to the DOM.
 		 */
 		const handleMutation = mutationsList => {
 			for (const mutation of mutationsList) {
 				for (const node of mutation.addedNodes) {
-					if (node.tagName !== 'VIDEO' || node.dataset.lazyvids === undefined)
+					if (
+						node.tagName !== 'VIDEO' ||
+						node.dataset.lazyvids === undefined ||
+						node.dataset.lazyvids === 'loaded'
+					)
 						continue;
 					process(node);
 				}
