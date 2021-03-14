@@ -1,9 +1,8 @@
-const lazyvids = (() => {
+const lazyvids = (configObj => {
 	document.addEventListener('DOMContentLoaded', () => {
 		/**
 		 * Configuration options.
 		 */
-		const configObj = window.lazyvidsConfig || {};
 		const config = {
 			logLevel: configObj && configObj.logLevel ? configObj.logLevel : 'silent',
 			ignoreHidden:
@@ -182,6 +181,6 @@ const lazyvids = (() => {
 		// Start observing for new lazyvids videos
 		mutationObserver.observe(document, mutationConfig);
 	});
-})();
+})(window.lazyvidsConfig || {});
 
 export default lazyvids;
