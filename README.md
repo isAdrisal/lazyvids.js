@@ -39,7 +39,7 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
 
 ```html
 <script>
-  window.lazysizesConfig = {
+  window.lazyvidsConfig = {
     logLevel: 'silent',
     ignoreHidden: false,
     minBandwidth: 0,
