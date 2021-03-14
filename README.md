@@ -26,9 +26,9 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 4. Provide the `<video>` with a `poster` image attribute. A poster image is required for the video to lazy-play by default, but can be disabled using the `lazyvidsConfig` option.
 
 ```html
-<video data-lazyvids muted playsinline poster="poster.jpg" preload="metadata src="example.mp4"></video>
+<video data-lazyvids muted playsinline poster="poster.jpg" preload="metadata" src="example.mp4"></video>
 
-<video data-lazyvids muted playsinline preload="metadata poster="poster.jpg">
+<video data-lazyvids muted playsinline preload="metadata" poster="poster.jpg">
   <source src="example.webm" type="video/webm">
   <source src="example.mp4" type="video/mp4">
 </video>
