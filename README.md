@@ -5,7 +5,7 @@
 Install using your favourite package manager.
 
 ```shell
-$ yarn add lazyvids
+$ yarn add lazyvids.js
 ```
 
 Import into your project.
