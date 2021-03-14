@@ -11,7 +11,7 @@ $ yarn add lazyvids
 Import into your project.
 
 ```js
-import lazyvids from 'lazyvids';
+import 'lazyvids.js';
 ```
 
 ## Usage
