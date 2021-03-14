@@ -1,0 +1,33 @@
+{
+  "name": "lazyvids.js",
+  "version": "0.0.1",
+  "description": "A small browser library to lazily autoplay HTML5 videos.",
+  "main": "dist/lazyvids.cjs.js",
+  "module": "dist/lazyvids.es5.js",
+  "browser": "dist/lazyvids.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isAdrisal/lazyvids.js.git"
+  },
+  "author": "isAdrisal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isAdrisal/lazyvids.js/issues"
+  },
+  "homepage": "https://github.com/isAdrisal/lazyvids.js#readme",
+  "scripts": {
+    "build": "yarn clean && yarn build:es5 && yarn build:cjs && yarn minify",
+    "build:es5": "mkdir -p dist && babel src/lazyvids.js --out-file dist/lazyvids.es5.js",
+    "build:cjs": "mkdir -p dist && babel --no-babelrc src/lazyvids.js --out-file dist/lazyvids.cjs.js",
+    "minify": "terser dist/lazyvids.es5.js -o dist/lazyvids.min.js && terser dist/lazyvids.cjs.js -o dist/lazyvids.cjs.min.js",
+    "clean": "rimraf dist/",
+    "deploy": "yarn build && yarn publish"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "rimraf": "^3.0.2",
+    "terser": "^5.6.0"
+  }
+}
