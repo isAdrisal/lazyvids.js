@@ -10,7 +10,7 @@ const lazyvids = (configObj => {
 			minBandwidth:
 				configObj && configObj.minBandwidth
 					? Number.parseFloat(configObj.minBandwidth)
-					: 2.0,
+					: 0,
 			reduceData:
 				configObj && configObj.reduceData ? configObj.reduceData : false,
 			requirePoster:
@@ -40,7 +40,8 @@ const lazyvids = (configObj => {
 			config.minBandwidth &&
 			navigator.connection &&
 			navigator.connection.downlink &&
-			navigator.connection.downlink < config.minBandwidth
+			(navigator.connection.downlink < config.minBandwidth ||
+				navigator.connection.saveData)
 		) {
 			warn(
 				`Slow connection (${navigator.connection.downlink}mbps). Lazy autoplay disabled.`
