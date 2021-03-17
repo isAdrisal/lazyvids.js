@@ -1,6 +1,6 @@
 {
   "name": "lazyvids",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A small utility to lazily autoplay HTML5 videos.",
   "main": "dist/lazyvids.js",
   "repository": {
