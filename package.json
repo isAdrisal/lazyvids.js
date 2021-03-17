@@ -1,7 +1,7 @@
 {
   "name": "lazyvids",
   "version": "0.0.2",
-  "description": "A small utility to lazily autoplay HTML5 videos.",
+  "description": "A small utility to lazy-load autoplay HTML5 videos once they enter the viewport.",
   "main": "dist/lazyvids.js",
   "repository": {
     "type": "git",

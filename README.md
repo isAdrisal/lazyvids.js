@@ -1,20 +1,23 @@
 # lazyvids.js
- Lazy-load autoplaying HTML5 video the easy way.
+
+A small utility to lazy-load autoplay HTML5 videos once they enter the viewport.
 
 ## Installation
+
 Install using your favourite package manager.
 
 ```shell
-$ yarn add lazyvids.js
+$ yarn add lazyvids
 ```
 
 Import into your project.
 
 ```js
-import 'lazyvids.js';
+import 'lazyvids';
 ```
 
 ## Usage
+
 lazyvids.js works by setting attributes on HTML5 video elements, and playing the videos once they are scrolled into view.
 
 1. Add a `[data-lazyvids]` attribute to `<video>` elements that you want to lazy-play.
@@ -26,32 +29,41 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 4. Provide the `<video>` with a `poster` image attribute. A poster image is required for the video to lazy-play by default, but can be disabled using the `lazyvidsConfig` option.
 
 ```html
-<video data-lazyvids muted playsinline poster="poster.jpg" preload="metadata" src="example.mp4"></video>
+<video
+	data-lazyvids
+	muted
+	playsinline
+	poster="poster.jpg"
+	preload="metadata"
+	src="example.mp4"
+></video>
 
 <video data-lazyvids muted playsinline preload="metadata" poster="poster.jpg">
-  <source src="example.webm" type="video/webm">
-  <source src="example.mp4" type="video/mp4">
+	<source src="example.webm" type="video/webm" />
+	<source src="example.mp4" type="video/mp4" />
 </video>
 ```
 
 ## Options
-Configuration options are available using a `lazyvidsConfig` object on the global `window` object. This must be included in the HTML before the `lazyvids.js` script.
+
+Configuration options are available using a `lazyvidsConfig` object on the global `window` object. This must be included in the HTML before the `lazyvids` script.
 
 ```html
 <script>
-  window.lazyvidsConfig = {
-    logLevel: 'silent',
-    ignoreHidden: false,
-    minBandwidth: 0,
-    reduceData: false,
-    requirePoster: true,
-  };
+	window.lazyvidsConfig = {
+		logLevel: 'silent',
+		ignoreHidden: false,
+		minBandwidth: 0,
+		reduceData: false,
+		requirePoster: true,
+	};
 </script>
 ```
-|**Option**|**Type**|**Default Value**|**Description**|
-|:-----|:-----:|:-----:|:-----|
-|`logLevel`|`string`|`silent`|Set logging level: `verbose`, `warn`, `silent`.|
-|`ignoreHidden`|`boolean`|`false`|Set whether to skip `<videos>` with `display: hidden`.|
-|`minBandwidth`|`number`|`0`|If `reducedData` is `true`, set threshold above which videos will play.|
-|`reduceData`|`boolean`|`false`|If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`.|
-|`requirePoster`|`boolean`|`true`|When `false`, will not lazy-play video if poster image is missing.|
+
+| **Option**      | **Type**  | **Default Value** | **Description**                                                                                |
+| :-------------- | :-------: | :---------------: | :--------------------------------------------------------------------------------------------- |
+| `logLevel`      | `string`  |     `silent`      | Set logging level: `verbose`, `warn`, `silent`.                                                |
+| `ignoreHidden`  | `boolean` |      `false`      | Set whether to skip `<videos>` with `display: hidden`.                                         |
+| `minBandwidth`  | `number`  |        `0`        | If `reducedData` is `true`, set threshold above which videos will play.                        |
+| `reduceData`    | `boolean` |      `false`      | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
+| `requirePoster` | `boolean` |      `true`       | When `false`, will not lazy-play video if poster image is missing.                             |
