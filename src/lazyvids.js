@@ -34,11 +34,7 @@
 				: window.console.warn(`lazyvids: ${message}`);
 		};
 
-		const hasIo =
-			typeof window.intersectionObserver === undefined ||
-			typeof window.intersectionObserver === 'undefined'
-				? false
-				: true;
+		const hasIo = typeof window.IntersectionObserver === 'function';
 		let intersectionObserver;
 
 		// Don't load videos on slow connections (optional)
