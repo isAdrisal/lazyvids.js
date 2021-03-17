@@ -1,4 +1,8 @@
-const lazyvids = (configObj => {
+(configObj => {
+	if (window.NodeList && !NodeList.prototype.forEach) {
+		NodeList.prototype.forEach = Array.prototype.forEach;
+	}
+
 	document.addEventListener('DOMContentLoaded', () => {
 		/**
 		 * Configuration options.
@@ -31,7 +35,10 @@ const lazyvids = (configObj => {
 		};
 
 		const hasIo =
-			typeof window.intersectionObserver === undefined ? false : true;
+			typeof window.intersectionObserver === undefined ||
+			typeof window.intersectionObserver === 'undefined'
+				? false
+				: true;
 		let intersectionObserver;
 
 		// Don't load videos on slow connections (optional)
@@ -147,7 +154,7 @@ const lazyvids = (configObj => {
 		 * Begin processing videos currently in the DOM.
 		 */
 		const selector = 'video[data-lazyvids]:not([data-lazyvids=loaded])';
-		const lazyVideos = Array.from(document.querySelectorAll(selector));
+		const lazyVideos = document.querySelectorAll(selector);
 		log(
 			`Initialised — ${lazyVideos.length} ${
 				lazyVideos.length === 1 ? 'video' : 'videos'
@@ -183,5 +190,3 @@ const lazyvids = (configObj => {
 		mutationObserver.observe(document, mutationConfig);
 	});
 })(window.lazyvidsConfig || {});
-
-export default lazyvids;
