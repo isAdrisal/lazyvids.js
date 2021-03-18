@@ -64,7 +64,7 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
 | **Option** | **Type** | **Default Value** | **Description** |
 | :-: | :-: | :-: | :-- |
 | `logLevel` | `string` | `silent` | Set logging level: `verbose`, `warn`, `silent`. |
-| `ignoreHidden` | `boolean` | `false` | Set whether to skip `<videos>` with `display: hidden`. |
-| `minBandwidth` | `number` | `0` | If `reducedData` is `true`, set threshold above which videos will play. |
+| `ignoreHidden` | `boolean` | `false` | Set whether to skip `<video>` elements with `display: hidden`. |
+| `minBandwidth` | `number` | `0` | If `reduceData` is `true`, set threshold above which videos will play. |
 | `reduceData` | `boolean` | `false` | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
 | `requirePoster` | `boolean` | `true` | When `false`, will lazy-play video even if poster image is missing. |
