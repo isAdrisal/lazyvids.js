@@ -26,21 +26,21 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 
 3. It's best practice to also include `muted` and `playsinline` attributes, but the library will add them by default.
 
-4. Provide the `<video>` with a `poster` image attribute. A poster image is required for the video to lazy-play by default, but can be disabled using the `lazyvidsConfig` option.
+4. Provide the `<video>` with a `poster` image attribute. A poster image is required for the video to lazy-play by default, but this behaviour can be changed using the relevant `lazyvidsConfig` option.
 
 ```html
 <video
-	data-lazyvids
-	muted
-	playsinline
-	poster="poster.jpg"
-	preload="metadata"
-	src="example.mp4"
+  data-lazyvids
+  muted
+  playsinline
+  preload="none"
+  poster="poster.jpg"
+  src="example.mp4"
 ></video>
 
-<video data-lazyvids muted playsinline preload="metadata" poster="poster.jpg">
-	<source src="example.webm" type="video/webm" />
-	<source src="example.mp4" type="video/mp4" />
+<video data-lazyvids muted playsinline preload="none" poster="poster.jpg">
+  <source src="example.webm" type="video/webm" />
+  <source src="example.mp4" type="video/mp4" />
 </video>
 ```
 
@@ -50,20 +50,21 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
 
 ```html
 <script>
-	window.lazyvidsConfig = {
-		logLevel: 'silent',
-		ignoreHidden: false,
-		minBandwidth: 0,
-		reduceData: false,
-		requirePoster: true,
-	};
+  window.lazyvidsConfig = lazyvidsConfig || {};
+  lazyvidsConfig = {
+    logLevel: 'silent',
+    ignoreHidden: false,
+    minBandwidth: 0,
+    reduceData: false,
+    requirePoster: true,
+  };
 </script>
 ```
 
-| **Option**      | **Type**  | **Default Value** | **Description**                                                                                |
-| :-------------- | :-------: | :---------------: | :--------------------------------------------------------------------------------------------- |
-| `logLevel`      | `string`  |     `silent`      | Set logging level: `verbose`, `warn`, `silent`.                                                |
-| `ignoreHidden`  | `boolean` |      `false`      | Set whether to skip `<videos>` with `display: hidden`.                                         |
-| `minBandwidth`  | `number`  |        `0`        | If `reducedData` is `true`, set threshold above which videos will play.                        |
-| `reduceData`    | `boolean` |      `false`      | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
-| `requirePoster` | `boolean` |      `true`       | When `false`, will not lazy-play video if poster image is missing.                             |
+| **Option** | **Type** | **Default Value** | **Description** |
+| :-: | :-: | :-: | :-- |
+| `logLevel` | `string` | `silent` | Set logging level: `verbose`, `warn`, `silent`. |
+| `ignoreHidden` | `boolean` | `false` | Set whether to skip `<videos>` with `display: hidden`. |
+| `minBandwidth` | `number` | `0` | If `reducedData` is `true`, set threshold above which videos will play. |
+| `reduceData` | `boolean` | `false` | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
+| `requirePoster` | `boolean` | `true` | When `false`, will lazy-play video even if poster image is missing. |
