@@ -22,7 +22,7 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 
 1. Add a `[data-lazyvids]` attribute to `<video>` elements that you want to lazy-play.
 
-2. Add `preload="metadata"` or `preload="none"` to the `<video>` to prevent the browser from downloading it when out of view.
+2. Add `preload="none"` to the `<video>` to prevent the browser from downloading it when out of view. `preload="metadata"` is preferred, but does not work as it should in Safari (🙄).
 
 3. It's best practice to also include `muted` and `playsinline` attributes, but the library will add them by default.
 
