@@ -34,10 +34,13 @@
         : window.console.warn(`lazyvids: ${message}`);
     };
 
-    const hasIo = typeof window.IntersectionObserver === 'function';
+    const supportsIntersectionObserver =
+      typeof window.IntersectionObserver === 'function';
     let intersectionObserver;
 
-    // Don't load videos on slow connections (optional)
+    /**
+     * Don't load videos on slow connections (optional)
+     */
     if (
       config.reduceData &&
       config.minBandwidth &&
@@ -115,7 +118,7 @@
     /**
      * Create IntersectionObserver for supported browsers (not IE).
      */
-    if (hasIo) {
+    if (supportsIntersectionObserver) {
       intersectionObserver = new IntersectionObserver(handleIntersection);
     }
 
@@ -135,7 +138,7 @@
       }
 
       // IE fallback — no support for IntersectionObserver
-      if (hasIo === false) {
+      if (supportsIntersectionObserver === false) {
         playVideo(video);
         warn(`Unsupported browser. Lazy autoplay disabled.`);
         return;
@@ -149,8 +152,8 @@
     /**
      * Begin processing videos currently in the DOM.
      */
-    const selector = 'video[data-lazyvids]:not([data-lazyvids=loaded])';
-    const lazyVideos = document.querySelectorAll(selector);
+    const domSelector = 'video[data-lazyvids]:not([data-lazyvids=loaded])';
+    const lazyVideos = document.querySelectorAll(domSelector);
     log(
       `Initialised — ${lazyVideos.length} ${
         lazyVideos.length === 1 ? 'video' : 'videos'
@@ -161,17 +164,25 @@
     /**
      * Set up mutationObserver to watch for new lazyvids videos being
      * added to the DOM.
+     *
+     * If added node is not a <video>, search within the added node
+     * for lazyvid videos.
      */
     const handleMutation = (mutationsList) => {
       mutationsList.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (
-            node.tagName !== 'VIDEO' ||
-            node.dataset.lazyvids === undefined ||
-            node.dataset.lazyvids === 'loaded'
-          )
+            node.tagName === 'VIDEO' &&
+            node.dataset.lazyvids !== undefined &&
+            node.dataset.lazyvids !== 'loaded'
+          ) {
+            process(node);
             return;
-          process(node);
+          }
+          if (node.hasChildNodes() === false) return;
+          const nestedLazyvids = node.querySelectorAll(domSelector);
+          if (nestedLazyvids.length === 0) return;
+          nestedLazyvids.forEach((videoNode) => process(videoNode));
         });
       });
     };
