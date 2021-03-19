@@ -38,7 +38,9 @@
       typeof window.IntersectionObserver === 'function';
     let intersectionObserver;
 
-    // Don't load videos on slow connections (optional)
+    /**
+     * Don't load videos on slow connections (optional)
+     */
     if (
       config.reduceData &&
       config.minBandwidth &&
