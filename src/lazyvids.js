@@ -34,7 +34,8 @@
         : window.console.warn(`lazyvids: ${message}`);
     };
 
-    const hasIo = typeof window.IntersectionObserver === 'function';
+    const supportsIntersectionObserver =
+      typeof window.IntersectionObserver === 'function';
     let intersectionObserver;
 
     // Don't load videos on slow connections (optional)
@@ -115,7 +116,7 @@
     /**
      * Create IntersectionObserver for supported browsers (not IE).
      */
-    if (hasIo) {
+    if (supportsIntersectionObserver) {
       intersectionObserver = new IntersectionObserver(handleIntersection);
     }
 
@@ -135,7 +136,7 @@
       }
 
       // IE fallback — no support for IntersectionObserver
-      if (hasIo === false) {
+      if (supportsIntersectionObserver === false) {
         playVideo(video);
         warn(`Unsupported browser. Lazy autoplay disabled.`);
         return;
