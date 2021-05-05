@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  Merge-Checks:
+  merge-Checks:
     runs-on: ubuntu-latest
     env:
       NODE: '14'
