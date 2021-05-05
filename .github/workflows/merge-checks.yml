@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: 🕵️‍♀️ Running merge checks with  ${{ runner.os }}
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
     - name: 💻 Setting up Node.js ${{ env.NODE }}
       uses: actions/setup-node@v2
       with:
