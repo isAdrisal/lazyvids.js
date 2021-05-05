@@ -6,13 +6,13 @@ on:
       - main
 
 jobs:
-  Merge-Checks:
+  build:
     runs-on: ubuntu-latest
     env:
       NODE: '14'
 
     steps:
-    - name: 🕵️‍♀️ Running merge checks with  ${{ runner.os }}
+    - name: 🕵️‍♀️ Running merge checks
       uses: actions/checkout@v2
     - name: 💻 Setting up Node.js ${{ env.NODE }}
       uses: actions/setup-node@v2
