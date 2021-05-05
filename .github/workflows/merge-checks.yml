@@ -19,6 +19,6 @@ jobs:
       with:
         node-version: ${{ env.NODE }}
     - name: 📦 Installing packages
-    - run: yarn
+      run: yarn
     - name: 🛠 Building project
-    - run: yarn build
+      run: yarn build
