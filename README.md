@@ -46,7 +46,7 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 
 ## Options
 
-Configuration options are available using a `lazyvidsConfig` object on the global `window` object. This must be included in the HTML before the `lazyvids` script.
+Configuration options are available using a `lazyvidsConfig` object on the global `window` object.
 
 ```html
 <script>
