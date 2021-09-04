@@ -64,21 +64,23 @@
       video.setAttribute('autoplay', '');
 
       window.requestAnimationFrame(() => {
-        const promise = video.play();
-        if (promise === undefined) {
-          video.dataset.lazyvids = 'loaded';
-        } else {
-          promise
-            .then(() => {
-              video.dataset.lazyvids = 'loaded';
-            })
-            .catch((error) => {
-              warn(`Video autoplay was blocked by the browser:`, {
-                video,
-                error,
+        window.requestAnimationFrame(() => {
+          const promise = video.play();
+          if (promise === undefined) {
+            video.dataset.lazyvids = 'loaded';
+          } else {
+            promise
+              .then(() => {
+                video.dataset.lazyvids = 'loaded';
+              })
+              .catch((error) => {
+                warn(`Video autoplay was blocked by the browser:`, {
+                  video,
+                  error,
+                });
               });
-            });
-        }
+          }
+        });
       });
     };
 
