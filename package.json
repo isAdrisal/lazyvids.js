@@ -14,12 +14,11 @@
   },
   "homepage": "https://github.com/isAdrisal/lazyvids.js#readme",
   "scripts": {
-    "build": "yarn clean && mkdir -p dist && yarn build:es5 && yarn build:es6",
-    "build:es5": "babel src/lazyvids.js --out-file dist/lazyvids.es5.min.js && terser dist/lazyvids.es5.min.js -o dist/lazyvids.es5.min.js",
-    "build:es6": "terser src/lazyvids.js -o dist/lazyvids.js",
-    "clean": " rm -rf dist/",
-    "deploy": "yarn build && yarn publish"
+    "build": "yarn clean && esbuild src/lazyvids.js --outdir=dist --minify --target=safari12",
+    "deploy": "yarn build && yarn publish",
+    "clean": " rm -rf dist/"
   },
   "devDependencies": {
+    "esbuild": "^0.12.25"
   }
 }
