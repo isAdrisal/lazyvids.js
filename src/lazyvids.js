@@ -21,17 +21,13 @@
         configObj && configObj.requirePoster ? configObj.requirePoster : true,
     };
 
-    const log = (message, object) => {
+    const log = (message, object = '') => {
       if (config.logLevel !== 'verbose') return;
-      object
-        ? window.console.log(`lazyvids: ${message}`, object)
-        : window.console.log(`lazyvids: ${message}`);
+      window.console.log(`lazyvids: ${message}`, object);
     };
-    const warn = (message, object) => {
+    const warn = (message, object = '') => {
       if (config.logLevel === 'silent') return;
-      object
-        ? window.console.warn(`lazyvids: ${message}`, object)
-        : window.console.warn(`lazyvids: ${message}`);
+      window.console.warn(`lazyvids: ${message}`, object);
     };
 
     const supportsIntersectionObserver =
@@ -66,8 +62,24 @@
       video.setAttribute('playsinline', '');
       video.setAttribute('muted', '');
       video.setAttribute('autoplay', '');
-      video.play();
-      video.setAttribute('data-lazyvids', 'loaded');
+
+      window.requestAnimationFrame(() => {
+        const promise = video.play();
+        if (promise === undefined) {
+          video.dataset.lazyvids = 'loaded';
+        } else {
+          promise
+            .then(() => {
+              video.dataset.lazyvids = 'loaded';
+            })
+            .catch((error) => {
+              warn(`Video autoplay was blocked by the browser:`, {
+                video,
+                error,
+              });
+            });
+        }
+      });
     };
 
     /**
@@ -145,7 +157,7 @@
       }
 
       // Fully supported
-      video.setAttribute('data-lazyvids', 'unloaded');
+      video.dataset.lazyvids = 'unloaded';
       intersectionObserver.observe(video);
     };
 
