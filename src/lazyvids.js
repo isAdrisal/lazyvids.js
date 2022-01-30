@@ -155,7 +155,8 @@
     /**
      * Begin processing videos currently in the DOM.
      */
-    const domSelector = 'video[data-lazyvids]:not([data-lazyvids=loaded])';
+    const domSelector =
+      'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
     const lazyVideos = document.querySelectorAll(domSelector);
     log(
       `Initialised — ${lazyVideos.length} ${
@@ -177,7 +178,8 @@
           if (
             node.tagName === 'VIDEO' &&
             node.dataset.lazyvids !== undefined &&
-            node.dataset.lazyvids !== 'loaded'
+            node.dataset.lazyvids !== 'loaded' &&
+            node.dataset.lazyvids !== 'false'
           ) {
             process(node);
             return;
