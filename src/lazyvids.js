@@ -8,10 +8,10 @@
      * Configuration options.
      */
     const config = {
-      logLevel: configObj.logLevel ?? 'silent',
-      ignoreHidden: configObj.ignoreHidden ?? false,
-      minBandwidth: configObj.minBandwidth ? Number(configObj.minBandwidth) : 0,
-      reduceData: configObj.reduceData ?? false,
+      logLevel: configObj?.logLevel ?? 'silent',
+      ignoreHidden: configObj?.ignoreHidden ?? false,
+      minBandwidth: configObj?.minBandwidth ? Number(configObj.minBandwidth) : 0,
+      reduceData: configObj?.reduceData ?? false,
     };
 
     const log = (message, object = '') => {
@@ -23,8 +23,7 @@
       window.console.warn(`lazyvids: ${message}`, object);
     };
 
-    const supportsIntersectionObserver =
-      typeof window.IntersectionObserver === 'function';
+    const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
     let intersectionObserver;
 
     /**
@@ -33,14 +32,9 @@
     if (
       config.reduceData &&
       config.minBandwidth &&
-      navigator.connection &&
-      navigator.connection.downlink &&
-      (navigator.connection.downlink < config.minBandwidth ||
-        navigator.connection.saveData)
+      (navigator.connection?.downlink < config.minBandwidth || navigator.connection?.saveData)
     ) {
-      warn(
-        `Slow connection (${navigator.connection.downlink}mbps). Lazy autoplay disabled.`
-      );
+      warn(`Slow connection (${navigator.connection?.downlink}mbps). Lazy autoplay disabled.`);
       return;
     }
 
@@ -70,19 +64,8 @@
      * Utility function to check for video element visibility.
      */
     const isVisible = (element) => {
-      if (
-        element.style &&
-        element.style.display &&
-        element.style.display === 'none'
-      )
-        return false;
-      if (
-        config.ignoreHidden &&
-        element.style &&
-        element.style.visibility &&
-        element.style.visibility === 'hidden'
-      )
-        return false;
+      if (element.style?.display === 'none') return false;
+      if (config.ignoreHidden && element.style?.visibility === 'hidden') return false;
       const styles = getComputedStyle(element);
       const display = styles.getPropertyValue('display');
       if (display === 'none') return false;
@@ -90,8 +73,7 @@
         const visibility = styles.getPropertyValue('visibility');
         if (visibility === 'hidden') return false;
       }
-      if (element.parentNode && element.parentNode !== document)
-        return isVisible(element.parentNode);
+      if (element.parentNode && element.parentNode !== document) return isVisible(element.parentNode);
       return true;
     };
 
@@ -138,14 +120,9 @@
     /**
      * Begin processing videos currently in the DOM.
      */
-    const domSelector =
-      'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
+    const domSelector = 'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
     const lazyVideos = document.querySelectorAll(domSelector);
-    log(
-      `Initialised — ${lazyVideos.length} ${
-        lazyVideos.length === 1 ? 'video' : 'videos'
-      } detected`
-    );
+    log(`Initialised — ${lazyVideos.length} ${lazyVideos.length === 1 ? 'video' : 'videos'} detected`);
     lazyVideos.forEach((video) => process(video));
 
     /**
@@ -169,7 +146,6 @@
           }
           if (node.hasChildNodes() === false) return;
           const nestedLazyvids = node.querySelectorAll(domSelector);
-          if (nestedLazyvids.length === 0) return;
           nestedLazyvids.forEach((videoNode) => process(videoNode));
         });
       });
