@@ -26,7 +26,7 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 
 3. It's best practice to also include `muted` and `playsinline` attributes, but the library will add them by default.
 
-4. Provide the `<video>` with a `poster` image attribute. A poster image is required for the video to lazy-play by default, but this behaviour can be changed using the relevant `lazyvidsConfig` option.
+4. Provide the `<video>` with a `poster` image attribute.
 
 ```html
 <video
@@ -56,7 +56,6 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
     ignoreHidden: false,
     minBandwidth: 0,
     reduceData: false,
-    requirePoster: true,
   };
 </script>
 ```
@@ -67,4 +66,3 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
 | `ignoreHidden` | `boolean` | `false` | Set whether to skip `<video>` elements with `display: hidden`. |
 | `minBandwidth` | `number` | `0` | If `reduceData` is `true`, set threshold above which videos will play. |
 | `reduceData` | `boolean` | `false` | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
-| `requirePoster` | `boolean` | `true` | When `false`, will lazy-play video even if poster image is missing. |

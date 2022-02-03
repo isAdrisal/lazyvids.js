@@ -8,17 +8,10 @@
      * Configuration options.
      */
     const config = {
-      logLevel: configObj && configObj.logLevel ? configObj.logLevel : 'silent',
-      ignoreHidden:
-        configObj && configObj.ignoreHidden ? configObj.ignoreHidden : false,
-      minBandwidth:
-        configObj && configObj.minBandwidth
-          ? Number.parseFloat(configObj.minBandwidth)
-          : 0,
-      reduceData:
-        configObj && configObj.reduceData ? configObj.reduceData : false,
-      requirePoster:
-        configObj && configObj.requirePoster ? configObj.requirePoster : true,
+      logLevel: configObj?.logLevel ?? 'silent',
+      ignoreHidden: configObj?.ignoreHidden ?? false,
+      minBandwidth: configObj?.minBandwidth ? Number(configObj.minBandwidth) : 0,
+      reduceData: configObj?.reduceData ?? false,
     };
 
     const log = (message, object = '') => {
@@ -30,8 +23,7 @@
       window.console.warn(`lazyvids: ${message}`, object);
     };
 
-    const supportsIntersectionObserver =
-      typeof window.IntersectionObserver === 'function';
+    const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
     let intersectionObserver;
 
     /**
@@ -40,26 +32,20 @@
     if (
       config.reduceData &&
       config.minBandwidth &&
-      navigator.connection &&
-      navigator.connection.downlink &&
-      (navigator.connection.downlink < config.minBandwidth ||
-        navigator.connection.saveData)
+      (navigator.connection?.downlink < config.minBandwidth || navigator.connection?.saveData)
     ) {
-      warn(
-        `Slow connection (${navigator.connection.downlink}mbps). Lazy autoplay disabled.`
-      );
+      warn(`Slow connection (${navigator.connection?.downlink}mbps). Lazy autoplay disabled.`);
       return;
     }
 
     /**
      * `playVideo()` is the last step, and main functionality.
      *
-     * Set autoplay, muted and playsinline attributes on the video,
-     * and start playing it with .play(). Update data-lazyvids attribute
+     * Set autoplay and muted attributes on the video, and start
+     * playing it with .play(). Update data-lazyvids attribute
      * value to prevent re-detecting the video for processing.
      */
     const playVideo = (video) => {
-      video.playsinline = true;
       video.muted = true;
       video.autoplay = true;
 
@@ -77,19 +63,8 @@
      * Utility function to check for video element visibility.
      */
     const isVisible = (element) => {
-      if (
-        element.style &&
-        element.style.display &&
-        element.style.display === 'none'
-      )
-        return false;
-      if (
-        config.ignoreHidden &&
-        element.style &&
-        element.style.visibility &&
-        element.style.visibility === 'hidden'
-      )
-        return false;
+      if (element.style?.display === 'none') return false;
+      if (config.ignoreHidden && element.style?.visibility === 'hidden') return false;
       const styles = getComputedStyle(element);
       const display = styles.getPropertyValue('display');
       if (display === 'none') return false;
@@ -97,8 +72,7 @@
         const visibility = styles.getPropertyValue('visibility');
         if (visibility === 'hidden') return false;
       }
-      if (element.parentNode && element.parentNode !== document)
-        return isVisible(element.parentNode);
+      if (element.parentNode && element.parentNode !== document) return isVisible(element.parentNode);
       return true;
     };
 
@@ -130,16 +104,6 @@
      * handling <video> elements discovered in the DOM.
      */
     const process = (video) => {
-      // lazyvids videos must have a poster image (default)
-      if (
-        config.requirePoster &&
-        (video.poster === undefined || video.poster === '')
-      ) {
-        playVideo(video);
-        warn(`Video missing poster image. Lazy autoplay disabled for:`, video);
-        return;
-      }
-
       // IE fallback — no support for IntersectionObserver
       if (supportsIntersectionObserver === false) {
         playVideo(video);
@@ -155,14 +119,9 @@
     /**
      * Begin processing videos currently in the DOM.
      */
-    const domSelector =
-      'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
+    const domSelector = 'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
     const lazyVideos = document.querySelectorAll(domSelector);
-    log(
-      `Initialised — ${lazyVideos.length} ${
-        lazyVideos.length === 1 ? 'video' : 'videos'
-      } detected`
-    );
+    log(`Initialised — ${lazyVideos.length} ${lazyVideos.length === 1 ? 'video' : 'videos'} detected`);
     lazyVideos.forEach((video) => process(video));
 
     /**
@@ -186,7 +145,6 @@
           }
           if (node.hasChildNodes() === false) return;
           const nestedLazyvids = node.querySelectorAll(domSelector);
-          if (nestedLazyvids.length === 0) return;
           nestedLazyvids.forEach((videoNode) => process(videoNode));
         });
       });
