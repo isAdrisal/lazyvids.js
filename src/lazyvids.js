@@ -41,12 +41,11 @@
     /**
      * `playVideo()` is the last step, and main functionality.
      *
-     * Set autoplay, muted and playsinline attributes on the video,
-     * and start playing it with .play(). Update data-lazyvids attribute
+     * Set autoplay and muted attributes on the video, and start
+     * playing it with .play(). Update data-lazyvids attribute
      * value to prevent re-detecting the video for processing.
      */
     const playVideo = (video) => {
-      video.playsinline = true;
       video.muted = true;
       video.autoplay = true;
 
