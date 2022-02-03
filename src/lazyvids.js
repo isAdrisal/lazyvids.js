@@ -8,17 +8,10 @@
      * Configuration options.
      */
     const config = {
-      logLevel: configObj && configObj.logLevel ? configObj.logLevel : 'silent',
-      ignoreHidden:
-        configObj && configObj.ignoreHidden ? configObj.ignoreHidden : false,
-      minBandwidth:
-        configObj && configObj.minBandwidth
-          ? Number.parseFloat(configObj.minBandwidth)
-          : 0,
-      reduceData:
-        configObj && configObj.reduceData ? configObj.reduceData : false,
-      requirePoster:
-        configObj && configObj.requirePoster ? configObj.requirePoster : true,
+      logLevel: configObj.logLevel ?? 'silent',
+      ignoreHidden: configObj.ignoreHidden ?? false,
+      minBandwidth: configObj.minBandwidth ? Number(configObj.minBandwidth) : 0,
+      reduceData: configObj.reduceData ?? false,
     };
 
     const log = (message, object = '') => {
@@ -130,16 +123,6 @@
      * handling <video> elements discovered in the DOM.
      */
     const process = (video) => {
-      // lazyvids videos must have a poster image (default)
-      if (
-        config.requirePoster &&
-        (video.poster === undefined || video.poster === '')
-      ) {
-        playVideo(video);
-        warn(`Video missing poster image. Lazy autoplay disabled for:`, video);
-        return;
-      }
-
       // IE fallback — no support for IntersectionObserver
       if (supportsIntersectionObserver === false) {
         playVideo(video);
