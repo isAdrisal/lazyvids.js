@@ -12,13 +12,13 @@
       reduceData: configObj?.reduceData ?? false,
     };
 
-    const log = (message, object = '') => {
+    const log = (message, ...args) => {
       if (config.logLevel !== 'verbose') return;
-      window.console.log(`lazyvids: ${message}`, object);
+      window.console.log(`lazyvids: ${message}`, ...args);
     };
-    const warn = (message, object = '') => {
+    const warn = (message, ...args) => {
       if (config.logLevel === 'silent') return;
-      window.console.warn(`lazyvids: ${message}`, object);
+      window.console.warn(`lazyvids: ${message}`, ...args);
     };
 
     const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
