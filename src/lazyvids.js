@@ -1,3 +1,5 @@
+// @ts-check
+
 ((configObj) => {
   if (window.NodeList && !NodeList.prototype.forEach) {
     NodeList.prototype.forEach = Array.prototype.forEach;
@@ -27,14 +29,18 @@
     let intersectionObserver;
 
     /**
-     * Don't load videos on slow connections (optional)
+     * @type {Navigator & CustomNavigator}
      */
+    const globalNavigator = window.navigator;
+    const downlink = globalNavigator?.connection?.downlink;
+    const saveData = globalNavigator?.connection?.saveData;
+
     if (
-      config.reduceData &&
-      config.minBandwidth &&
-      (navigator.connection?.downlink < config.minBandwidth || navigator.connection?.saveData)
+      (config.reduceData && config.minBandwidth && downlink && downlink < config.minBandwidth) ||
+      (config.reduceData && saveData)
     ) {
-      warn(`Slow connection (${navigator.connection?.downlink}mbps). Lazy autoplay disabled.`);
+      // Don't load videos on slow connections (optional)
+      warn(`Slow connection (${globalNavigator.connection?.downlink}mbps). Lazy autoplay disabled.`);
       return;
     }
 
@@ -159,4 +165,13 @@
     // Start observing for new lazyvids videos
     mutationObserver.observe(document, mutationConfig);
   });
-})(window.lazyvidsConfig || {});
+
+/**
+ * @typedef {Object} CustomNavigator
+ * @property {NavigatorConnection} [connection] - Information about the network connection. (may not be supported by all browsers)
+
+ * @typedef {Object} NavigatorConnection
+ * @property {number} [downlink] - The effective downlink speed in megabits per second (Mbps).
+ * @property {boolean} [saveData] - Indicates if the user has enabled data saver mode.
+ * 
+ */
