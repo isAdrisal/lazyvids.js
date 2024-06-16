@@ -2,6 +2,7 @@
 
 ((configObj) => {
   if (window.NodeList && !NodeList.prototype.forEach) {
+    // @ts-ignore-next-line
     NodeList.prototype.forEach = Array.prototype.forEach;
   }
 
@@ -165,6 +166,8 @@
     // Start observing for new lazyvids videos
     mutationObserver.observe(document, mutationConfig);
   });
+  // @ts-ignore-next-line
+})(window?.lazyvidsConfig || {});
 
 /**
  * @typedef {Object} CustomNavigator
