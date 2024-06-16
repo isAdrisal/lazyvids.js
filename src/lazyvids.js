@@ -46,6 +46,8 @@
      * Set autoplay and muted attributes on the video, and start
      * playing it with .play(). Update data-lazyvids attribute
      * value to prevent re-detecting the video for processing.
+     *
+     * @param {HTMLVideoElement} video
      */
     const playVideo = (video) => {
       video.muted = true;
@@ -63,18 +65,25 @@
 
     /**
      * Utility function to check for video element visibility.
+     *
+     * @param {HTMLElement} element
+     * @returns {boolean} Whether the element would be visible if it was within the viewport. Does not account for occlusion from other elements.
      */
     const isVisible = (element) => {
-      if (element.style?.display === 'none') return false;
-      if (config.ignoreHidden && element.style?.visibility === 'hidden') return false;
-      const styles = getComputedStyle(element);
-      const display = styles.getPropertyValue('display');
-      if (display === 'none') return false;
-      if (config.ignoreHidden) {
-        const visibility = styles.getPropertyValue('visibility');
-        if (visibility === 'hidden') return false;
+      if (element.style?.display === 'none' || (config.ignoreHidden && element.style?.visibility === 'hidden')) {
+        return false;
       }
-      if (element.parentNode && element.parentNode !== document) return isVisible(element.parentNode);
+
+      const styles = getComputedStyle(element);
+      if (styles.getPropertyValue('display') === 'none') return false;
+
+      if (config.ignoreHidden) {
+        if (styles.getPropertyValue('visibility') === 'hidden') return false;
+      }
+
+      if (element.parentElement && element.parentElement instanceof HTMLHtmlElement === false)
+        return isVisible(element.parentElement);
+
       return true;
     };
 
@@ -86,9 +95,10 @@
      */
     const handleIntersection = (entries, intersectionObserver) => {
       for (const entry of entries) {
+        const target = entry.target;
+        if (target instanceof HTMLVideoElement === false || !entry.isIntersecting) continue;
+
         window.requestAnimationFrame(() => {
-          const target = entry.target;
-          if (entry.isIntersecting === false) return;
           if (isVisible(target) === false) return;
           playVideo(target);
           intersectionObserver.unobserve(target);
