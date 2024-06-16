@@ -1,11 +1,6 @@
 // @ts-check
 
 ((configObj) => {
-  if (window.NodeList && !NodeList.prototype.forEach) {
-    // @ts-ignore-next-line
-    NodeList.prototype.forEach = Array.prototype.forEach;
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
     /**
      * Configuration options.
@@ -86,9 +81,11 @@
     /**
      * Set up IntersectionObserver to respond to lazyvids videos entering
      * the viewport.
+     *
+     * @type {IntersectionObserverCallback}
      */
     const handleIntersection = (entries, intersectionObserver) => {
-      entries.forEach((entry) => {
+      for (const entry of entries) {
         window.requestAnimationFrame(() => {
           const target = entry.target;
           if (entry.isIntersecting === false) return;
@@ -96,7 +93,7 @@
           playVideo(target);
           intersectionObserver.unobserve(target);
         });
-      });
+      }
     };
 
     /**
@@ -109,6 +106,8 @@
     /**
      * `process()` method does most of the heavy lifting regarding
      * handling <video> elements discovered in the DOM.
+     *
+     * @param {HTMLVideoElement} video
      */
     const process = (video) => {
       // IE fallback — no support for IntersectionObserver
@@ -129,42 +128,52 @@
     const domSelector = 'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
     const lazyVideos = document.querySelectorAll(domSelector);
     log(`Initialised — ${lazyVideos.length} ${lazyVideos.length === 1 ? 'video' : 'videos'} detected`);
-    lazyVideos.forEach((video) => process(video));
+    for (const video of lazyVideos) {
+      if (video instanceof HTMLVideoElement === false) continue;
+      process(video);
+    }
 
     /**
      * Set up mutationObserver to watch for new lazyvids videos being
      * added to the DOM.
      *
-     * If added node is not a <video>, search within the added node
+     * If added node is not a `<video>`, search within the added node
      * for lazyvid videos.
+     *
+     * @type {MutationCallback}
      */
     const handleMutation = (mutationsList) => {
-      mutationsList.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type !== 'childList') continue;
+
+        for (const node of mutation.addedNodes) {
           if (
-            node.tagName === 'VIDEO' &&
+            node instanceof HTMLVideoElement &&
             node.dataset.lazyvids !== undefined &&
             node.dataset.lazyvids !== 'loaded' &&
             node.dataset.lazyvids !== 'false'
           ) {
             process(node);
-            return;
+            continue;
           }
-          if (node.hasChildNodes() === false) return;
-          const nestedLazyvids = node.querySelectorAll(domSelector);
-          nestedLazyvids.forEach((videoNode) => process(videoNode));
-        });
-      });
-    };
 
-    const mutationConfig = {
-      childList: true,
-      subtree: true,
+          if (node instanceof HTMLElement === false || !node.hasChildNodes()) continue;
+
+          const nestedLazyvids = node.querySelectorAll(domSelector);
+          for (const video of nestedLazyvids) {
+            if (video instanceof HTMLVideoElement === false) continue;
+            process(video);
+          }
+        }
+      }
     };
-    const mutationObserver = new MutationObserver(handleMutation);
 
     // Start observing for new lazyvids videos
-    mutationObserver.observe(document, mutationConfig);
+    const mutationObserver = new MutationObserver(handleMutation);
+    mutationObserver.observe(document, {
+      childList: true,
+      subtree: true,
+    });
   });
   // @ts-ignore-next-line
 })(window?.lazyvidsConfig || {});
