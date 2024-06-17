@@ -15,13 +15,22 @@
   "homepage": "https://github.com/isAdrisal/lazyvids.js#readme",
   "scripts": {
     "build": "esbuild src/lazyvids.js --target=safari12",
-    "build:dev": "rm -rf temp && yarn build --outdir=temp",
-    "build:prod": "rm -rf dist && yarn build --outdir=dist --minify",
-    "start": "yarn build:dev --watch",
-    "test": "yarn build:dev && echo 'hello'",
-    "deploy": "yarn build:prod && yarn publish"
+    "build:dev": "rm -rf temp && npm run build -- --outdir=temp",
+    "build:prod": "rm -rf dist && npm run build -- --outdir=dist --minify",
+    "start": "npm run build:dev -- --watch",
+    "test": "npm run build:dev && echo 'hello'",
+    "deploy": "npm run build:prod && npm publish"
   },
   "devDependencies": {
     "esbuild": "^0.21.5"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "trailingComma": "es5",
+    "semi": true,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "printWidth": 120,
+    "proseWrap": "never"
   }
 }
