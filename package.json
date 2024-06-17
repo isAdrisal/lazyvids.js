@@ -20,12 +20,13 @@
     "build:dev": "rm -rf temp && npm run build -- --outdir=temp",
     "build:prod": "rm -rf dist && npm run build -- --outdir=dist --minify",
     "start": "npm run build:dev -- --watch",
-    "test": "npm run build:dev && web-test-runner test/**/*.test.js --node-resolve --playwright --browsers chromium firefox webkit",
+    "test": "npm run build:dev && web-test-runner test/**/*.test.{html,js} --node-resolve --playwright --browsers chromium firefox webkit",
     "deploy": "npm run build:prod && npm publish"
   },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
     "@web/test-runner": "^0.18.2",
+    "@web/test-runner-mocha": "^0.9.0",
     "@web/test-runner-playwright": "^0.11.0",
     "esbuild": "^0.21.5"
   },

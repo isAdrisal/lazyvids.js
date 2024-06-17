@@ -66,6 +66,20 @@
       <source src="flying.mp4#2" type="video/mp4">
     </video>
   </main>
+
+  <script type="module">
+    import { runTests } from '@web/test-runner-mocha';
+    import { expect } from '@esm-bundle/chai';
+    import { setViewport } from '@web/test-runner-commands';
+
+    runTests(() => {
+      it('document has 3 videos', async () => {
+        await setViewport({ width: 1200, height: 1000 });
+        const nodeList = document.querySelectorAll('video');
+        expect(nodeList.length).to.equal(3);
+      });
+    });
+  </script>
 </body>
 
 </html>
