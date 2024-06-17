@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test</title>
+  <style>
+    video {
+      height: auto;
+      width: 100%;
+      display: block;
+      border-radius: 1ch;
+    }
+
+    @media (max-width: 649px) {
+      .hide-mobile {
+        display: none;
+      }
+    }
+
+    @media (min-width: 650px) {
+      .hide-desktop {
+        display: none;
+      }
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: hsl(0, 0%, 94%);
+      margin: 0px;
+      font-family: monospace;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      width: 100%;
+      max-width: 600px;
+      margin: 1rem;
+      background: white;
+      border-radius: 2ch;
+      padding: 2rem;
+      box-shadow: 4px 4px 8px hsla(0, 0%, 10%, 8%);
+    }
+  </style>
+  <script src="../temp/lazyvids.js"></script>
+</head>
+
+<body>
+  <main>
+    <video class="hide-desktop" data-lazyvids preload="none" muted src="clouds.mp4" poster="clouds_poster.jpg"
+      width="1440" height="1918" title="Timelapse of clouds over a building">
+    </video>
+
+    <video class="hide-mobile" data-lazyvids preload="none" muted src="flying.mp4#1" poster="flying_poster.webp"
+      width="1920" height="1080" title="Flight over mountainous terrain">
+    </video>
+
+    <video data-lazyvids preload="none" muted poster="flying_poster.webp" width="1920" height="1080"
+      title="Flight over mountainous terrain">
+      <source src="flying.mp4#2" type="video/mp4">
+    </video>
+  </main>
+</body>
+
+</html>
