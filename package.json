@@ -3,6 +3,7 @@
   "version": "0.2.3",
   "description": "A small utility to lazy-load autoplay HTML5 videos once they enter the viewport.",
   "main": "dist/lazyvids.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/isAdrisal/lazyvids.js.git"
@@ -14,14 +15,18 @@
   },
   "homepage": "https://github.com/isAdrisal/lazyvids.js#readme",
   "scripts": {
+    "postinstall": "npx playwright install --with-deps",
     "build": "esbuild src/lazyvids.js --target=safari12",
     "build:dev": "rm -rf temp && npm run build -- --outdir=temp",
     "build:prod": "rm -rf dist && npm run build -- --outdir=dist --minify",
     "start": "npm run build:dev -- --watch",
-    "test": "npm run build:dev && echo 'hello'",
+    "test": "npm run build:dev && web-test-runner test/**/*.test.js --node-resolve --playwright --browsers chromium firefox webkit",
     "deploy": "npm run build:prod && npm publish"
   },
   "devDependencies": {
+    "@esm-bundle/chai": "^4.3.4-fix.0",
+    "@web/test-runner": "^0.18.2",
+    "@web/test-runner-playwright": "^0.11.0",
     "esbuild": "^0.21.5"
   },
   "prettier": {

@@ -7,7 +7,7 @@ A small utility to lazy-load autoplay HTML5 videos once they enter the viewport.
 Install using your favourite package manager.
 
 ```shell
-$ yarn add lazyvids
+$ npm install lazyvids
 ```
 
 Import into your project.
