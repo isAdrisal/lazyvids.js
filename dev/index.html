@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lazyvids.js dev</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="lazyvids.js"></script>
+</head>
+
+<body>
+  <main>
+    <video class="hide-desktop" data-lazyvids preload="none" muted loop src="clouds.mp4" poster="clouds_poster.jpg"
+      width="1440" height="1918" title="Timelapse of clouds over a building">
+    </video>
+
+    <video class="hide-mobile" data-lazyvids preload="none" muted loop src="flying.mp4#1" poster="flying_poster.webp"
+      width="1920" height="1080" title="Flight over mountainous terrain">
+    </video>
+
+    <video data-lazyvids preload="none" muted loop poster="flying_poster.webp" width="1920" height="1080"
+      title="Flight over mountainous terrain">
+      <source src="flying.mp4#2" type="video/mp4">
+    </video>
+  </main>
+</body>
+
+</html>
