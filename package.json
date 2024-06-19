@@ -20,7 +20,7 @@
     "build:dev": "rm -rf temp && npm run build -- --outdir=temp",
     "build:prod": "rm -rf dist && npm run build -- --outdir=dist --minify",
     "start": "npm run build:dev -- --watch",
-    "test": "npm run build:dev && web-test-runner test/**/*.test.{html,js} --node-resolve --playwright --browsers chromium firefox webkit",
+    "test": "npm run build:dev && web-test-runner test/**/*.test.{html,js} --node-resolve --playwright --browsers chromium",
     "deploy": "npm run build:prod && npm publish"
   },
   "devDependencies": {

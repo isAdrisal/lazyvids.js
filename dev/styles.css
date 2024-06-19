@@ -1,0 +1,41 @@
+video {
+  height: auto;
+  width: 100%;
+  display: block;
+  border-radius: 1ch;
+}
+
+@media (max-width: 649px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+
+@media (min-width: 650px) {
+  .hide-desktop {
+    display: none;
+  }
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: hsl(0, 0%, 94%);
+  margin: 0px;
+  font-family: monospace;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 1rem;
+  background: white;
+  border-radius: 2ch;
+  padding: 2rem;
+  box-shadow: 4px 4px 8px hsla(0, 0%, 10%, 8%);
+}
