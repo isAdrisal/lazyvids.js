@@ -2,22 +2,24 @@ name: Merge Checks
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      NODE: '14'
+      NODE: '22'
 
     steps:
-    - name: 🕵️‍♀️ Running merge checks
-      uses: actions/checkout@v2
-    - name: 💻 Setting up Node.js ${{ env.NODE }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ env.NODE }}
-    - name: 📦 Installing packages
-      run: yarn
-    - name: 🛠 Building project
-      run: yarn build
+      - name: 🕵️‍♀️ Running merge checks
+        uses: actions/checkout@v2
+      - name: 💻 Setting up Node.js ${{ env.NODE }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE }}
+      - name: 📦 Installing packages
+        run: npm install
+      - name: 🩻 Running tests
+        run: npm test
+      - name: 🛠 Building project
+        run: npm run build:prod
