@@ -25,7 +25,7 @@
     let intersectionObserver;
 
     /**
-     * @type {Navigator & CustomNavigator}
+     * @type {Navigator & ChromiumNavigator}
      */
     const globalNavigator = window.navigator;
     const downlink = globalNavigator?.connection?.downlink;
@@ -189,7 +189,7 @@
 })(window?.lazyvidsConfig || {});
 
 /**
- * @typedef {Object} CustomNavigator
+ * @typedef {Object} ChromiumNavigator
  * @property {NavigatorConnection} [connection] - Information about the network connection. (may not be supported by all browsers)
 
  * @typedef {Object} NavigatorConnection
