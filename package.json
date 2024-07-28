@@ -34,14 +34,5 @@
     "esbuild": "^0.23.0",
     "hono": "^4.5.2",
     "prettier": "^3.3.3"
-  },
-  "prettier": {
-    "arrowParens": "always",
-    "trailingComma": "es5",
-    "semi": true,
-    "tabWidth": 2,
-    "singleQuote": false,
-    "printWidth": 120,
-    "proseWrap": "preserve"
   }
 }
