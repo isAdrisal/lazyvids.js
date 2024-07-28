@@ -13,7 +13,7 @@ $ npm install lazyvids
 Import into your project.
 
 ```js
-import 'lazyvids';
+import "lazyvids";
 ```
 
 ## Usage

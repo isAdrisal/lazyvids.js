@@ -13,7 +13,7 @@ $ npm install lazyvids
 Import into your project.
 
 ```js
-import 'lazyvids';
+import "lazyvids";
 ```
 
 ## Usage
@@ -29,14 +29,7 @@ lazyvids.js works by setting attributes on HTML5 video elements, and playing the
 4. Provide the `<video>` with a `poster` image attribute.
 
 ```html
-<video
-  data-lazyvids
-  muted
-  playsinline
-  preload="none"
-  poster="poster.jpg"
-  src="example.mp4"
-></video>
+<video data-lazyvids muted playsinline preload="none" poster="poster.jpg" src="example.mp4"></video>
 
 <video data-lazyvids muted playsinline preload="none" poster="poster.jpg">
   <source src="example.webm" type="video/webm" />
@@ -52,7 +45,7 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
 <script>
   window.lazyvidsConfig = lazyvidsConfig || {};
   lazyvidsConfig = {
-    logLevel: 'silent',
+    logLevel: "silent",
     ignoreHidden: false,
     minBandwidth: 0,
     reduceData: false,
@@ -60,12 +53,12 @@ Configuration options are available using a `lazyvidsConfig` object on the globa
 </script>
 ```
 
-| **Option** | **Type** | **Default Value** | **Description** |
-| :-: | :-: | :-: | :-- |
-| `logLevel` | `string` | `silent` | Set logging level: `verbose`, `warn`, `silent`. |
-| `ignoreHidden` | `boolean` | `false` | Set whether to skip `<video>` elements with `display: hidden`. |
-| `minBandwidth` | `number` | `0` | If `reduceData` is `true`, set threshold above which videos will play. |
-| `reduceData` | `boolean` | `false` | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
+|   **Option**   | **Type**  | **Default Value** | **Description**                                                                                |
+| :------------: | :-------: | :---------------: | :--------------------------------------------------------------------------------------------- |
+|   `logLevel`   | `string`  |     `silent`      | Set logging level: `verbose`, `warn`, `silent`.                                                |
+| `ignoreHidden` | `boolean` |      `false`      | Set whether to skip `<video>` elements with `display: hidden`.                                 |
+| `minBandwidth` | `number`  |        `0`        | If `reduceData` is `true`, set threshold above which videos will play.                         |
+|  `reduceData`  | `boolean` |      `false`      | If `true`, will not play videos if data saver is enabled or bandwidth is below `minBandwidth`. |
 
 ## Contributing
 

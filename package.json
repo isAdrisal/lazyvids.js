@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/isAdrisal/lazyvids.js#readme",
   "scripts": {
-    "fmt": "prettier '**/*'.{js,css,html,md} -w",
+    "fmt": "prettier '**/*'.{js,ts,mjs,css,html,md} -w",
     "postinstall": "npx playwright install --with-deps",
     "build": "esbuild src/lazyvids.js --target=safari12",
     "build:dev": "rm -rf dev/*.js && npm run build -- --outdir=dev --log-level=warning",

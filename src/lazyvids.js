@@ -1,27 +1,27 @@
 // @ts-check
 
 ((configObj) => {
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     /**
      * Configuration options.
      */
     const config = {
-      logLevel: configObj?.logLevel ?? 'silent',
+      logLevel: configObj?.logLevel ?? "silent",
       ignoreHidden: configObj?.ignoreHidden ?? false,
       minBandwidth: configObj?.minBandwidth ? Number(configObj.minBandwidth) : 0,
       reduceData: configObj?.reduceData ?? false,
     };
 
     const log = (message, ...args) => {
-      if (config.logLevel !== 'verbose') return;
+      if (config.logLevel !== "verbose") return;
       window.console.log(`lazyvids: ${message}`, ...args);
     };
     const warn = (message, ...args) => {
-      if (config.logLevel === 'silent') return;
+      if (config.logLevel === "silent") return;
       window.console.warn(`lazyvids: ${message}`, ...args);
     };
 
-    const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
+    const supportsIntersectionObserver = typeof window.IntersectionObserver === "function";
     let intersectionObserver;
 
     /**
@@ -56,10 +56,10 @@
       if (video.play() !== undefined) {
         video
           .play()
-          .then(() => (video.dataset.lazyvids = 'loaded'))
+          .then(() => (video.dataset.lazyvids = "loaded"))
           .catch((error) => warn(`Autoplay blocked by browser for:`, video));
       } else {
-        video.dataset.lazyvids = 'loaded';
+        video.dataset.lazyvids = "loaded";
       }
     };
 
@@ -70,15 +70,15 @@
      * @returns {boolean} Whether the element would be visible if it was within the viewport. Does not account for occlusion from other elements.
      */
     const isVisible = (element) => {
-      if (element.style?.display === 'none' || (config.ignoreHidden && element.style?.visibility === 'hidden')) {
+      if (element.style?.display === "none" || (config.ignoreHidden && element.style?.visibility === "hidden")) {
         return false;
       }
 
       const styles = getComputedStyle(element);
-      if (styles.getPropertyValue('display') === 'none') return false;
+      if (styles.getPropertyValue("display") === "none") return false;
 
       if (config.ignoreHidden) {
-        if (styles.getPropertyValue('visibility') === 'hidden') return false;
+        if (styles.getPropertyValue("visibility") === "hidden") return false;
       }
 
       if (element.parentElement && element.parentElement instanceof HTMLHtmlElement === false)
@@ -128,16 +128,16 @@
       }
 
       // Fully supported
-      video.dataset.lazyvids = 'unloaded';
+      video.dataset.lazyvids = "unloaded";
       intersectionObserver.observe(video);
     };
 
     /**
      * Begin processing videos currently in the DOM.
      */
-    const domSelector = 'video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])';
+    const domSelector = "video[data-lazyvids]:not([data-lazyvids=loaded]):not([data-lazyvids=false])";
     const lazyVideos = document.querySelectorAll(domSelector);
-    log(`Initialised — ${lazyVideos.length} ${lazyVideos.length === 1 ? 'video' : 'videos'} detected`);
+    log(`Initialised — ${lazyVideos.length} ${lazyVideos.length === 1 ? "video" : "videos"} detected`);
     for (const video of lazyVideos) {
       if (video instanceof HTMLVideoElement === false) continue;
       process(video);
@@ -154,14 +154,14 @@
      */
     const handleMutation = (mutationsList) => {
       for (const mutation of mutationsList) {
-        if (mutation.type !== 'childList') continue;
+        if (mutation.type !== "childList") continue;
 
         for (const node of mutation.addedNodes) {
           if (
             node instanceof HTMLVideoElement &&
             node.dataset.lazyvids !== undefined &&
-            node.dataset.lazyvids !== 'loaded' &&
-            node.dataset.lazyvids !== 'false'
+            node.dataset.lazyvids !== "loaded" &&
+            node.dataset.lazyvids !== "false"
           ) {
             process(node);
             continue;
