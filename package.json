@@ -15,30 +15,33 @@
   },
   "homepage": "https://github.com/isAdrisal/lazyvids.js#readme",
   "scripts": {
+    "fmt": "prettier '**/*'.{js,css,html,md} -w",
     "postinstall": "npx playwright install --with-deps",
     "build": "esbuild src/lazyvids.js --target=safari12",
     "build:dev": "rm -rf dev/*.js && npm run build -- --outdir=dev --log-level=warning",
     "build:prod": "rm -rf dist && npm run build -- --outdir=dist --minify",
     "start": "npm run build:dev -s -- --watch=forever & node dev.js",
-    "test": "npm run build:dev && web-test-runner test/**/*.test.{html,js} --node-resolve --playwright --browsers chromium",
+    "test": "npm run build:dev -s && web-test-runner test/**/*.test.{html,js}",
+    "test:watch": "npm run build:dev -s && web-test-runner test/**/*.test.{html,js} --watch",
     "deploy": "npm run build:prod && npm publish"
   },
   "devDependencies": {
     "@esm-bundle/chai": "^4.3.4-fix.0",
-    "@hono/node-server": "^1.11.3",
+    "@hono/node-server": "^1.12.0",
     "@web/test-runner": "^0.18.2",
     "@web/test-runner-mocha": "^0.9.0",
     "@web/test-runner-playwright": "^0.11.0",
-    "esbuild": "^0.21.5",
-    "hono": "^4.4.7"
+    "esbuild": "^0.23.0",
+    "hono": "^4.5.2",
+    "prettier": "^3.3.3"
   },
   "prettier": {
     "arrowParens": "always",
     "trailingComma": "es5",
     "semi": true,
     "tabWidth": 2,
-    "singleQuote": true,
+    "singleQuote": false,
     "printWidth": 120,
-    "proseWrap": "never"
+    "proseWrap": "preserve"
   }
 }
